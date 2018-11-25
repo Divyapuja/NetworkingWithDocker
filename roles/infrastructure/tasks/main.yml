@@ -1,0 +1,27 @@
+---
+  - name: install Docker first
+    command: sudo apt install -y docker.io
+
+  - name: pull ubuntu image
+    command: sudo docker pull ubuntu
+
+  - name: create containers
+    command: sudo docker run -itd --privileged --name="{{containerName}}" --hostname="{{containerName}}" ubuntu
+
+  - name: create Veth pair
+    command: sudo ip link add "{{containerName}}_{{networkType}}" type veth peer name "{{networkType}}_{{containerName}}"
+  
+  - name: detect process id of the container
+    command: sudo docker inspect -f {{.State.Pid}} "{{containerName}}"
+    register:
+  
+  - name: make interface up
+    command: sudo ip link set testif netns "{{pid}}"
+  
+  
+  
+
+
+
+
+

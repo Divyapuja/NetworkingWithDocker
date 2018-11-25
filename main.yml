@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: csv to var file
+      command: "python csv_to_yaml.py input.csv"
+
+- hosts: localhost
+  become: yes
+  gather_facts: no
+  vars_files:
+    - input.csv.yml
+  roles:
+    - infrastructure
