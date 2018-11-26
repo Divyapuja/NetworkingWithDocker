@@ -7,7 +7,6 @@ import yaml
 csv_data = []
 with open(sys.argv[1]) as csvfile:
     reader = csv.DictReader(csvfile)
-    print(reader[0])
     for row in reader:
         csv_data.append(row)
 
