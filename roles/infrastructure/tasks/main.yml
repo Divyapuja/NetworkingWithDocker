@@ -6,17 +6,17 @@
     command: sudo docker pull ubuntu
 
   - name: create containers
-    command: sudo docker run -itd --privileged --name="{{containerName}}" --hostname="{{containerName}}" ubuntu
+    command: sudo docker run -itd --privileged --name="{{Name_destination_container}}" --hostname="{{Name_destination_container}}" ubuntu
 
   - name: create Veth pair
-    command: sudo ip link add "{{containerName}}_{{networkType}}" type veth peer name "{{networkType}}_{{containerName}}"
+    command: sudo ip link add "{{Name_destination_container}}_{{Network_type}}" type veth peer name "{{Network_type}}_{{Name_destination_container}}"
   
   - name: detect process id of the container
-    command: sudo docker inspect -f {{.State.Pid}} "{{containerName}}"
-    register:
+    command: sudo docker inspect -f {{.State.Pid}} "{{Name_destination_container}}"
+    register: pid
   
   - name: make interface up
-    command: sudo ip link set testif netns "{{pid}}"
+    command: sudo ip link set testif netns "{{pid.stdout}}"
   
   
   
