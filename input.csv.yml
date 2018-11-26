@@ -1,0 +1,4 @@
+- {Name_destination_container: CS2, Name_src_container: CS1, Network_type: Bridge}
+- {Name_destination_container: CS2X, Name_src_container: CS1X, Network_type: VXLAN}
+- {Name_destination_container: CSY, Name_src_container: CSX, Network_type: L3}
+- {Name_destination_container: CSB, Name_src_container: CSA, Network_type: GRE}
