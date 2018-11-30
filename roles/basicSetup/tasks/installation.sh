@@ -1,3 +1,4 @@
+#!/bin/bash
 sudo docker exec -it LC1 apt-get update
 sudo docker exec -it LC1 apt-get upgrade -y
 sudo docker exec -it LC1 apt-get install net-tools
