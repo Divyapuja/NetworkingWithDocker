@@ -31,7 +31,7 @@
     register: pid_LC1
 
   - name: make default interface down
-    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link eth0 down
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev eth0 down
 
   - name: attach veth pair interface to containers
     command: sudo ip link set LC1_SC1 netns "{{pid_LC1.stdout}}"
@@ -59,7 +59,7 @@
     register: pid_LC2
   
   - name: make default interface down
-    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link eth0 down
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev eth0 down
 
   - name: attach veth pair interface to containers
     command: sudo ip link set LC2_SC1 netns "{{pid_LC2.stdout}}"
@@ -87,7 +87,7 @@
     register: pid_SC1
 
   - name: make default interface down
-    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link eth0 down
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link set dev eth0 down
 
   - name: attach veth pair interface to containers
     command: sudo ip link set SC1_LC1 netns "{{pid_SC1.stdout}}"
@@ -112,7 +112,7 @@
     register: pid_SC2
 
   - name: make default interface down
-    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link eth0 down
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link set dev eth0 down
 
   - name: attach veth pair interface to containers
     command: sudo ip link set SC2_LC1 netns "{{pid_SC2.stdout}}"
