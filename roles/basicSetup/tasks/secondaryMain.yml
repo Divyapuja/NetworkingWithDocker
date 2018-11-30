@@ -1,0 +1,102 @@
+  - name: run installtion.sh
+    command: sh ./roles/basicSetup/tasks/installation.sh
+
+  - name: create Veth pair
+    command: sudo ip link add LC1_SC1 type veth peer name SC1_LC1
+
+  - name: create Veth pair
+    command: sudo ip link add LC2_SC1 type veth peer name SC1_LC2
+
+  - name: create Veth pair
+    command: sudo ip link add LC1_SC2 type veth peer name SC2_LC1
+
+  - name: create Veth pair
+    command: sudo ip link add LC2_SC2 type veth peer name SC2_LC2
+
+  - name: detect process id of the container
+    command: sh ./roles/basicSetup/tasks/getPID.sh LC1
+    register: pid_LC1
+
+  - name: attach veth pair interface to containers
+    command: sudo ip link set LC1_SC1 netns "{{pid_LC1.stdout}}"
+
+  - name: attach veth pair interface to containers
+    command: sudo ip link set LC1_SC2 netns "{{pid_LC1.stdout}}"
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev SC1_LC2 up
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev LC1_SC2 up
+
+  - name: add ip to these interfaces
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip addr add 172.18.0.1/16 dev LC1_SC1
+
+  - name: add ip to these interfaces
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip addr add 172.18.0.2/16 dev LC1_SC2
+
+  - name: detect process id of the container
+    command: sh ./roles/basicSetup/tasks/getPID.sh LC2
+    register: pid_LC2
+
+  - name: attach veth pair interface to containers
+    command: sudo ip link set LC2_SC1 netns "{{pid_LC2.stdout}}"
+
+  - name: attach veth pair interface to containers
+    command: sudo ip link set LC2_SC2 netns "{{pid_LC2.stdout}}"
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev LC2_SC1 up
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev LC2_SC2 up
+
+  - name: add ip to these interfaces
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip addr add 172.19.0.1/16 dev LC2_SC1
+
+  - name: add ip to these interfaces
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip addr add 172.19.0.2/16 dev LC2_SC2
+
+  - name: detect process id of the container
+    command: sh ./roles/basicSetup/tasks/getPID.sh SC1
+    register: pid_SC1
+
+  - name: attach veth pair interface to containers
+    command: sudo ip link set SC1_LC1 netns "{{pid_SC1.stdout}}"
+
+  - name: attach veth pair interface to containers
+    command: sudo ip link set SC1_LC2 netns "{{pid_SC1.stdout}}"
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link set dev SC1_LC1 up
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link set dev SC1_LC2 up
+
+  - name: add ip to these interfaces
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip addr add 172.20.0.1/16 dev SC1_LC1
+
+  - name: add ip to these interfaces
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip addr add 172.20.0.2/16 dev SC1_LC2
+
+  - name: detect process id of the container
+    command: sh ./roles/basicSetup/tasks/getPID.sh SC2
+    register: pid_SC2
+
+  - name: attach veth pair interface to containers
+    command: sudo ip link set SC2_LC1 netns "{{pid_SC2.stdout}}"
+
+  - name: attach veth pair interface to containers
+    command: sudo ip link set SC2_LC2 netns "{{pid_SC2.stdout}}"
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link set dev SC2_LC1 up
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link set dev SC2_LC2 up
+
+  - name: add ip to these interfaces
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 172.21.0.1/16 dev SC2_LC1
+
+  - name: add ip to these interfaces
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 172.21.0.2/16 dev SC2_LC2
