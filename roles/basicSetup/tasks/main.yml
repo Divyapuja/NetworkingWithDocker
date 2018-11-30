@@ -46,10 +46,10 @@
     command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev LC1_SC2 up
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip addr add 192.168.2.1 dev LC1_SC1
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip addr add 192.168.2.1/24 dev LC1_SC1
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip addr add 192.168.3.1 dev LC1_SC2
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip addr add 192.168.3.1/24 dev LC1_SC2
 
   - name: add default route
     command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip route add default via 192.168.3.2 dev LC1_SC2
@@ -74,10 +74,10 @@
     command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev LC2_SC2 up
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip addr add 192.168.4.2 dev LC2_SC1
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip addr add 192.168.4.2/24 dev LC2_SC1
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip addr add 192.168.5.2 dev LC2_SC2
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip addr add 192.168.5.2/24 dev LC2_SC2
 
   - name: add default route in LC2
     command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip route add default via 192.168.5.1 dev LC2_SC2
@@ -102,10 +102,10 @@
     command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link set dev SC1_LC2 up
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip addr add 192.168.2.2 dev SC1_LC1
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip addr add 192.168.2.2/24 dev SC1_LC1
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip addr add 192.168.4.1 dev SC1_LC2
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip addr add 192.168.4.1/24 dev SC1_LC2
 
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh SC2
@@ -127,10 +127,10 @@
     command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link set dev SC2_LC2 up
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 192.168.3.2 dev SC2_LC1
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 192.168.3.2/24 dev SC2_LC1
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 192.168.5.1 dev SC2_LC2
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 192.168.5.124 dev SC2_LC2
 
   - name: add route in SC2
     command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip route add 192.168.10.0/24 via 192.168.3.1
