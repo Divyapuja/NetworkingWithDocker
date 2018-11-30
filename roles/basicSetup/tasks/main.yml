@@ -49,10 +49,10 @@
     command: sudo ip link set LC1_SC2 netns "{{pid_LC1.stdout}}"
 
   - name: make interface up
-    command: sudo ip link set netns "{{pid_LC1.stdout}}" dev LC1_SC1 up
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev SC1_LC2 up
 
   - name: make interface up
-    command: sudo ip link set netns "{{pid_LC1.stdout}}" dev LC1_SC2 up
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev LC1_SC2 up
 
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh LC2
@@ -65,10 +65,10 @@
     command: sudo ip link set LC2_SC2 netns "{{pid_LC2.stdout}}"
 
   - name: make interface up
-    command: sudo ip link set netns "{{pid_LC2.stdout}}" dev LC2_SC1 up
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev LC2_SC1 up
 
   - name: make interface up
-    command: sudo ip link set netns "{{pid_LC2.stdout}}" dev LC2_SC2 up
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev LC2_SC2 up
 
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh SC1
@@ -81,10 +81,10 @@
     command: sudo ip link set SC1_LC2 netns "{{pid_SC1.stdout}}"
 
   - name: make interface up
-    command: sudo ip link set netns "{{pid_SC1.stdout}}" dev SC1_LC1 up
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link set dev SC1_LC1 up
 
   - name: make interface up
-    command: sudo ip link set netns "{{pid_SC1.stdout}}" dev SC1_LC2 up
+    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link set dev SC1_LC2 up
 
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh SC2
@@ -97,7 +97,7 @@
     command: sudo ip link set SC2_LC2 netns "{{pid_SC2.stdout}}"
 
   - name: make interface up
-    command: sudo ip link set netns "{{pid_SC2.stdout}}" dev SC2_LC1 up
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link set dev SC2_LC1 up
 
   - name: make interface up
-    command: sudo ip link set netns "{{pid_SC2.stdout}}" dev SC2_LC2 up
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link set dev SC2_LC2 up
