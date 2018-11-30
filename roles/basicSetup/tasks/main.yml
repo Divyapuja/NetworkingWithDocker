@@ -22,13 +22,13 @@
 
   - name: create containers SC2
     command: sudo docker run -itd --privileged --name=SC2 --hostname=SC2 --net q5Network --ip 172.21.0.15 ubuntu
-	
+
   - name: run installtion.sh
-    shell: sh ./installation.sh
+    command: sh ./roles/basicSetup/tasks/installation.sh
 
   - name: create Veth pair
     command: sudo ip link add LC1_SC1 type veth peer name SC1_LC1
-	
+
   - name: create Veth pair
     command: sudo ip link add LC2_SC1 type veth peer name SC1_LC2
 
@@ -53,7 +53,7 @@
 
   - name: make interface up
     command: sudo ip link set netns "{{pid_LC1.stdout}}" dev LC1_SC2 up
-	
+
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh LC2
     register: pid_LC2
@@ -69,23 +69,23 @@
 
   - name: make interface up
     command: sudo ip link set netns "{{pid_LC2.stdout}}" dev LC2_SC2 up
-	
+
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh SC1
     register: pid_SC1
-	
+
   - name: attach veth pair interface to containers
     command: sudo ip link set SC1_LC1 netns "{{pid_SC1.stdout}}"
 
   - name: attach veth pair interface to containers
     command: sudo ip link set SC1_LC2 netns "{{pid_SC1.stdout}}"
-	
+
   - name: make interface up
     command: sudo ip link set netns "{{pid_SC1.stdout}}" dev SC1_LC1 up
 
   - name: make interface up
     command: sudo ip link set netns "{{pid_SC1.stdout}}" dev SC1_LC2 up
-	
+
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh SC2
     register: pid_SC2
@@ -95,7 +95,7 @@
 
   - name: attach veth pair interface to containers
     command: sudo ip link set SC2_LC2 netns "{{pid_SC2.stdout}}"
-	
+
   - name: make interface up
     command: sudo ip link set netns "{{pid_SC2.stdout}}" dev SC2_LC1 up
 
