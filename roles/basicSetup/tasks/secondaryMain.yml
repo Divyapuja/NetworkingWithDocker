@@ -1,6 +1,4 @@
-  - name: run installtion.sh
-    command: sh ./roles/basicSetup/tasks/installation.sh
-
+---
   - name: create Veth pair
     command: sudo ip link add LC1_SC1 type veth peer name SC1_LC1
 

@@ -1,24 +1,128 @@
 ---
-  - name: creating network to be used for everything
-    command: sudo docker network create --subnet=172.18.0.0/16 q2Network
+#  - name: creating network to be used for everything
+#    command: sudo docker network create --subnet=172.18.0.0/16 q2Network
 
-  - name: create containers LC1
-    command: sudo docker run -itd --privileged --name=LC1 --hostname=LC1 --net q2Network --ip 172.18.0.12 ubuntu
+#  - name: create containers LC1
+#    command: sudo docker run -itd --privileged --name=LC1 --hostname=LC1 --net q2Network --ip 172.18.0.12 ubuntu
 
-  - name: creating network to be used for everything
-    command: sudo docker network create --subnet=172.19.0.0/16 q3Network
+#  - name: creating network to be used for everything
+#    command: sudo docker network create --subnet=172.19.0.0/16 q3Network
 
-  - name: create containers LC2
-    command: sudo docker run -itd --privileged --name=LC2 --hostname=LC2 --net q3Network --ip 172.19.0.13 ubuntu
+#  - name: create containers LC2
+#    command: sudo docker run -itd --privileged --name=LC2 --hostname=LC2 --net q3Network --ip 172.19.0.13 ubuntu
 
-  - name: creating network to be used for everything
-    command: sudo docker network create --subnet=172.20.0.0/16 q4Network
+#  - name: creating network to be used for everything
+#    command: sudo docker network create --subnet=172.20.0.0/16 q4Network
 
-  - name: create containers SC1
-    command: sudo docker run -itd --privileged --name=SC1 --hostname=SC1 --net q4Network --ip 172.20.0.14 ubuntu
+#  - name: create containers SC1
+#    command: sudo docker run -itd --privileged --name=SC1 --hostname=SC1 --net q4Network --ip 172.20.0.14 ubuntu
 
-  - name: creating network to be used for everything
-    command: sudo docker network create --subnet=172.21.0.0/16 q5Network
+#  - name: creating network to be used for everything
+#    command: sudo docker network create --subnet=172.21.0.0/16 q5Network
 
-  - name: create containers SC2
-    command: sudo docker run -itd --privileged --name=SC2 --hostname=SC2 --net q5Network --ip 172.21.0.15 ubuntu
+#  - name: create containers SC2
+#    command: sudo docker run -itd --privileged --name=SC2 --hostname=SC2 --net q5Network --ip 172.21.0.15 ubuntu
+
+#  - name: run installation
+#    script: ./roles/basicSetup/tasks/installation.sh
+
+#  - name: create Veth pair
+#    command: sudo ip link add LC1_SC1 type veth peer name SC1_LC1
+
+#  - name: create Veth pair
+#    command: sudo ip link add LC2_SC1 type veth peer name SC1_LC2
+
+#  - name: create Veth pair
+#    command: sudo ip link add LC1_SC2 type veth peer name SC2_LC1
+
+#  - name: create Veth pair
+#    command: sudo ip link add LC2_SC2 type veth peer name SC2_LC2
+
+#  - name: detect process id of the container
+#    command: sh ./roles/basicSetup/tasks/getPID.sh LC1
+#    register: pid_LC1
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set LC1_SC1 netns "{{pid_LC1.stdout}}"
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set LC1_SC2 netns "{{pid_LC1.stdout}}"
+
+#  - name: make interface up
+#    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev LC1_SC1 up
+
+#  - name: make interface up
+#    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev LC1_SC2 up
+
+#  - name: add ip to these interfaces
+#    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip addr add 172.18.0.1/16 dev LC1_SC1
+
+#  - name: add ip to these interfaces
+#    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip addr add 172.18.0.2/16 dev LC1_SC2
+
+#  - name: detect process id of the container
+#    command: sh ./roles/basicSetup/tasks/getPID.sh LC2
+#    register: pid_LC2
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set LC2_SC1 netns "{{pid_LC2.stdout}}"
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set LC2_SC2 netns "{{pid_LC2.stdout}}"
+
+#  - name: make interface up
+#    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev LC2_SC1 up
+
+#  - name: make interface up
+#    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev LC2_SC2 up
+
+#  - name: add ip to these interfaces
+#    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip addr add 172.19.0.1/16 dev LC2_SC1
+
+#  - name: add ip to these interfaces
+#    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip addr add 172.19.0.2/16 dev LC2_SC2
+
+#  - name: detect process id of the container
+#    command: sh ./roles/basicSetup/tasks/getPID.sh SC1
+#    register: pid_SC1
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set SC1_LC1 netns "{{pid_SC1.stdout}}"
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set SC1_LC2 netns "{{pid_SC1.stdout}}"
+
+#  - name: make interface up
+#    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link set dev SC1_LC1 up
+
+#  - name: make interface up
+#    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip link set dev SC1_LC2 up
+
+#  - name: add ip to these interfaces
+#    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip addr add 172.20.0.1/16 dev SC1_LC1
+
+#  - name: add ip to these interfaces
+#    command: sudo nsenter -t "{{pid_SC1.stdout}}" -n ip addr add 172.20.0.2/16 dev SC1_LC2
+
+#  - name: detect process id of the container
+#    command: sh ./roles/basicSetup/tasks/getPID.sh SC2
+#    register: pid_SC2
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set SC2_LC1 netns "{{pid_SC2.stdout}}"
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set SC2_LC2 netns "{{pid_SC2.stdout}}"
+
+#  - name: make interface up
+#    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link set dev SC2_LC1 up
+
+#  - name: make interface up
+#    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip link set dev SC2_LC2 up
+
+#  - name: add ip to these interfaces
+#    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 172.21.0.1/16 dev SC2_LC1
+
+#  - name: add ip to these interfaces
+#    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 172.21.0.2/16 dev SC2_LC2
+
