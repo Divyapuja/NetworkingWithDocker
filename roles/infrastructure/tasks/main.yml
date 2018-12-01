@@ -1,25 +1,53 @@
 ---
-  - name: install Docker first
-    command: sudo apt install -y docker.io
+#  - name: copy the csv yml to vars in current task
+#    command: cp ./input.csv.yml ./roles/infrastructure/vars/input.csv
 
-  - name: pull ubuntu image
-    command: sudo docker pull ubuntu
-
-  - name: create containers
-    command: sudo docker run -itd --privileged --name="{{Name_destination_container}}" --hostname="{{Name_destination_container}}" ubuntu
-
-  - name: create Veth pair
-    command: sudo ip link add "{{Name_destination_container}}_{{Network_type}}" type veth peer name "{{Network_type}}_{{Name_destination_container}}"
+#  - name: create source containers 
+#    command: sudo docker run -itd --privileged --name="{{Name_src_container1}}" --hostname="{{Name_src_container1}}" ubuntu
   
-  - name: detect process id of the container
-    command: sudo docker inspect -f {{.State.Pid}} "{{Name_destination_container}}"
-    register: pid
-  
+#  - name: install everything
+#    script: ./roles/infrastructure/tasks/onFlyInstallation.sh "{{Name_src_container1}}"  
+
+#  - name: create destination container
+#    command: sudo docker run -itd --privileged --name="{{Name_destination_container2}}" --hostname="{{Name_destination_container2}}" ubuntu
+
+#  - name: install everything
+#    script: ./roles/infrastructure/tasks/onFlyInstallation.sh "{{Name_destination_container2}}"
+
+#  - name: create Veth pair
+#    command: sudo ip link add "{{Name_src_container1}}_{{Network_type0}}" type veth peer name "{{Network_type0}}_{{Name_src_container1}}"
+
+#  - name: create Veth pair
+#    command: sudo ip link add "{{Name_destination_container2}}_{{Network_type0}}" type veth peer name "{{Network_type0}}_{{Name_destination_container2}}"
+
+#  - name: create Veth pair
+#    command: sudo ip link add "{{Network_type0}}_LC1" type veth peer name "LC1_{{Network_type0}}"
+
+  - name: detect process id of the source container
+    command: sh ./roles/basicSetup/tasks/getPID.sh "{{Name_src_container1}}"
+    register: pid_src
+
+  - name: detect process id of the destination container
+    command: sh ./roles/basicSetup/tasks/getPID.sh "{{Name_destination_container2}}"
+    register: pid_dest
+
+#  - name: make default interface down for src
+#    command: sudo nsenter -t "{{pid_src.stdout}}" -n ip link set dev eth0 down
+
+#  - name: make default interface down
+#    command: sudo nsenter -t "{{pid_dest.stdout}}" -n ip link set dev eth0 down
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set "{{Name_src_container1}}_{{Network_type0}}" netns "{{pid_src.stdout}}"
+
+#  - name: attach veth pair interface to containers
+#    command: sudo ip link set "{{Name_destination_container2}}_{{Network_type0}}" netns "{{pid_dest.stdout}}"
+
   - name: make interface up
-    command: sudo ip link set testif netns "{{pid.stdout}}"
-  
-  
-  
+    command: sudo nsenter -t "{{pid_src.stdout}}" -n ip link set dev "{{Name_src_container1}}_{{Network_type0}}" up
+
+  - name: make interface up
+    command: sudo nsenter -t "{{pid_dest.stdout}}" -n ip link set dev "{{Name_destination_container2}}_{{Network_type0}}" up
 
 
 

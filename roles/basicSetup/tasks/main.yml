@@ -53,6 +53,12 @@
 
   - name: add default route
     command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip route add default via 192.168.3.2 dev LC1_SC2
+  
+  - name: add GRE into LC1
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip tunnel add gretun1 mode gre local 192.168.3.1 remote 192.168.5.2
+    
+  - name: add GRE into LC1
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev gretun1 up
 
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh LC2
@@ -81,6 +87,12 @@
 
   - name: add default route in LC2
     command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip route add default via 192.168.5.1 dev LC2_SC2
+
+  - name: add GRE into LC2
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip tunnel add gretun1 mode gre local 192.168.5.2 remote 192.168.3.1
+    
+  - name: add GRE into LC2
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev gretun1 up
 
   - name: detect process id of the container
     command: sh ./roles/basicSetup/tasks/getPID.sh SC1
@@ -130,7 +142,10 @@
     command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 192.168.3.2/24 dev SC2_LC1
 
   - name: add ip to these interfaces
-    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 192.168.5.124 dev SC2_LC2
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip addr add 192.168.5.1/24 dev SC2_LC2
 
   - name: add route in SC2
     command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip route add 192.168.10.0/24 via 192.168.3.1
+
+  - name: add route in SC2
+    command: sudo nsenter -t "{{pid_SC2.stdout}}" -n ip route add 192.168.6.0/24 via 192.168.5.2

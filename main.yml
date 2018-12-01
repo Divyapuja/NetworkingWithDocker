@@ -12,5 +12,5 @@
   vars_files:
     - input.csv.yml
   roles:
-#    - infrastructure
-    - basicSetup
+    - infrastructure
+#    - basicSetup

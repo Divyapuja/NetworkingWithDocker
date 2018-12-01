@@ -1,0 +1,28 @@
+---
+  - name: detect process id of the container
+    command: sh ./roles/basicSetup/tasks/getPID.sh LC1
+    register: pid_LC1
+
+  - name: detect process id of the container
+    command: sh ./roles/basicSetup/tasks/getPID.sh LC2
+    register: pid_LC2
+
+  - name: detect process id of the container
+    command: sh ./roles/basicSetup/tasks/getPID.sh SC1
+    register: pid_SC1
+
+  - name: detect process id of the container
+    command: sh ./roles/basicSetup/tasks/getPID.sh SC2
+    register: pid_SC2
+
+  - name: add GRE into LC1
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip tunnel add gretun1 mode gre local 192.168.3.1 remote 192.168.5.2
+    
+  - name: add GRE into LC1
+    command: sudo nsenter -t "{{pid_LC1.stdout}}" -n ip link set dev gretun1 up
+
+  - name: add GRE into LC2
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip tunnel add gretun1 mode gre local 192.168.5.2 remote 192.168.3.1
+    
+  - name: add GRE into LC2
+    command: sudo nsenter -t "{{pid_LC2.stdout}}" -n ip link set dev gretun1 up

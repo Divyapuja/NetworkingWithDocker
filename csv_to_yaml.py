@@ -15,11 +15,13 @@ with open(sys.argv[1] + '.yml', 'w') as outfile:
 
 with open(sys.argv[1] + '.yml', 'rU') as f:
     data = yaml.safe_load(f)
+    counter = 0
     for line in data:
         for i in line.keys():
             NewKey = i.replace(" ", "_")
-	    line[NewKey] = line[i]
+	    line[NewKey+str(counter)] = line[i]
             del line[i]
+            counter = counter + 1
 
 with open(sys.argv[1] + '.yml', 'w') as f:
     yaml.dump(data, f)
