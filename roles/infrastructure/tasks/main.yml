@@ -23,6 +23,22 @@
 #  - name: create Veth pair
 #    command: sudo ip link add "{{Network_type0}}_LC1" type veth peer name "LC1_{{Network_type0}}"
 
+#  - name: create bridge
+#    command: "{{ item }}"
+#    with_items: 
+#      - brctl addbr br1
+#      - ip link set br1 up
+#      - brctl addif br1 "{{Network_type0}}_{{Name_src_container1}}"
+#      - brctl addif br1 "{{Network_type0}}_{{Name_destination_container2}}"
+#    when: ("{{Network_type0}}" == "Bridge")
+
+  - name: create another bridge if L3 or GRE
+    command: "{{ item }}"
+    with_items:
+      - brctl addbr br2
+      - ip link set br2 up
+    when: ("{{Network_type0}}" == "GRE") or ("{{Network_type3}}" == "GRE") or ("{{Network_type6}}" == "GRE") or ("{{Network_type9}}" == "GRE") or ("{{Network_type0}}" == "L3") or ("{{Network_type3}}" == "L3") or ("{{Network_type6}}" == "L3") or ("{{Network_type9}}" == "L3")
+
   - name: detect process id of the source container
     command: sh ./roles/basicSetup/tasks/getPID.sh "{{Name_src_container1}}"
     register: pid_src
